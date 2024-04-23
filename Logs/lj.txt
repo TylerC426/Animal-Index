@@ -1,0 +1,32 @@
+4/9/2024
+
+We met to begin designing our pokedex idea. 
+We focused on what the GUI would look like what
+what different compoenets we would need for the project
+We also set a time to work on the powerpoint for the 
+Prototype presentation.
+
+4/11/2024
+
+We met to continue working on the powerpoint and we 
+decided on using an API for the project. We spent time
+finding an API as well as working on getting our 
+camera to work. Dalton also shows us the GUI prototype
+he had created
+
+
+
+4/16/2024
+
+We met to finalize the powerpoint for the prototype presentation. 
+We went to office hours to ask a few questions about the project.
+Tyler got a microbit connector to help with the project
+
+4/23/2024
+
+We met to set up a a real github repo as we have been temporarily 
+using the ones made in class one day. This repo will be the actual
+one used for the project. We continued to work on the project. 
+We decided that Tyler will work on the camera aspect, Dalton
+will work on the API and I will work on the GUI
+
