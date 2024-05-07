@@ -1,2 +1,19 @@
 4-23-24
 Remade repository to organize files better.
+
+
+4-29-24
+Started learning OpenCV to setup camera for project.
+
+
+5-3-24
+Began outline of the camera.py file.
+Contains a function to turn camera on and a funtion to turn it off. Also a function for saving an image.
+
+5-7-24
+Met with group, and after talking about it. We will no longer use a camera as we cannot figure out how it works.
+Instead we will be using a search bar to search animals, another API for the images of the animals, 
+and GPIO buttons to work menus. 2 buttons to go from page to page on animals that have multiple pages.
+To make things easier, the development branch for this will continue with the name "cameraDevelopment" so
+progress can more easily be tracked.
+
