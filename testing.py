@@ -4,6 +4,7 @@ from tkinter import PhotoImage
 import os
 import requests
 import json
+from PIL import Image, ImageTk
 
 def animalLookup(name):
     name = name
@@ -15,6 +16,8 @@ def animalLookup(name):
     else:
         print("Error:", response.status_code, response.text)
 
+animal_data = None
+photo_images = []
 
 
 '''
@@ -56,7 +59,7 @@ def show_info():
         if selected_species_data:
             img = os.path.join("images", "Penguin.PNG")
             characteristics = selected_species_data.get('characteristics')
-            scientific_name = selected_species_data.get('taxonomy', {}).get('scientific_name')
+            scientific_name = selected_species_data.get('taxonomy')
             create_window(characteristics, img, scientific_name)
         else:
             messagebox.showerror("Error", "Species data not found")
@@ -67,7 +70,7 @@ def show_info():
 
 def create_window(description, img_path, facts):
     # Create main window
-    window = tk.Tk()
+    window = tk.Toplevel()
     window.title("Information Window")
 
     # Create frame for the bottom half of the window
@@ -79,16 +82,48 @@ def create_window(description, img_path, facts):
     top_frame.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
     # Load and display image
-    img = PhotoImage(file=img_path)
-    image_label = tk.Label(top_frame, image=img)
+    img = Image.open(img_path)
+    img = img.resize((200, 200))
+    photo = ImageTk.PhotoImage(img)
+    photo_images.append(photo)
+    image_label = tk.Label(top_frame, image=photo)
+    image_label.image = photo
     image_label.pack(side=tk.LEFT, padx=10, pady=10)
 
-    # Add more information
-    info_label = tk.Label(top_frame, text=facts)
+
+   
+
+    prey = description.get('prey', '')
+    group_behavior = description.get('goup_behavior', '')
+    estimated_population_size = description.get('estimated_population_size', '')
+    most_distinctive_feature = description.get('most_distinctive_feature', '')
+    habitat = description.get('habitat', '')
+    diet = description.get('diet', '')
+    common_name = description.get('common_name', '')
+    location = description.get('location', '')
+    group = description.get('group', '')
+    lifespan = description.get('lifespan', '')
+    family = facts.get('family', '')
+    genus = facts.get('genus', '')
+    scientific_name = facts.get('scientific_name', '')
+
+
+    fact_text = f"""Name: {common_name}
+    Family: {family}
+    Genus: {genus}
+    Scientific Name: {scientific_name}"""
+
+
+ # Add more information
+    info_label = tk.Label(top_frame, text=fact_text)
     info_label.pack(side=tk.RIGHT, padx=10, pady=10)
 
     # Add information in the bottom frame
-    info_text = description
+    info_text = f'''A {common_name} is a {group} that can be found in {location}.
+    Its habitat is {habitat}. 
+    It is a {diet} that preys on {prey}. It lives about {lifespan} and
+    there are about {estimated_population_size} of them. It can be described
+    as having {most_distinctive_feature}'''
     bottom_info_label = tk.Label(bottom_frame, text=info_text)
     bottom_info_label.pack(padx=10, pady=10)
 
@@ -121,35 +156,3 @@ info_button.pack()
 # Run the main event loop
 root.mainloop()
 
-
-
-info = [
-    {
-        "name": "Adelie Penguin",
-        "taxonomy": {
-            "kingdom": "Animalia",
-            "phylum": "Chordata",
-            "class": "Aves",
-            "order": "Sphenisciformes",
-            "family": "Spheniscidae",
-            "genus": "Pygoscelis",
-            "scientific_name": "Pygoscelis adeliae"
-        },
-        "locations": [
-            "Antarctica",
-            "Asia",
-            "Eurasia",
-            "Ocean"
-        ],
-        "characteristics": {
-            "prey": "Krill, Fish, Squid",
-            "name_of_young": "Chicks",
-            "group_behavior": "Colony",
-            "most_distinctive_feature": "Small white circle around each eye"
-        }
-    },
-    {
-        "name": "African Penguin",
-    }
-        
-]
