@@ -44,4 +44,3 @@ img = os.path.join("images", "penguin.PNG")
 
 facts = """Family: Spheniscidae\nOrder: Sphenisciformes\n
 other\ninfomration\n probably"""
-create_window(desc, img, facts)
