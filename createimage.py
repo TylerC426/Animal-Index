@@ -31,7 +31,6 @@ def fetch_image(animal):
             response = requests.get(image_url)
             response.raise_for_status()  # Check for HTTP errors
             img = Image.open(io.BytesIO(response.content))
-            animal_image.save(os.path.join('images', f'{animal}.gif'))
             return img
         except requests.exceptions.RequestException as e:
             print(f"Error fetching image: {e}")
@@ -39,11 +38,11 @@ def fetch_image(animal):
     else:
         return None
 
-# Example usage:
-animal_name = "adelie penguin"
-animal_image = fetch_image(animal_name)
-if animal_image:
-    animal_image.show()
-    animal_image.save(os.path.join('images', f'{animal_name}.gif'))
-else:
-    print("Image not found.")
+def save_image(animal, img):
+    if img:
+        try:
+            img.save(os.path.join('images', f'{animal}.jpg'))
+            return os.path.join('images', f'{animal}.jpg')
+        except Exception as e:
+            print(f"Error saving image: {e}")
+    return None
