@@ -1,6 +1,5 @@
 import pineworkslabs.RPi as GPIO
 from time import sleep
-import GUI
 
 YELLOW_BUTTON = 16
 RED_BUTTON = 13
@@ -13,32 +12,17 @@ GPIO.setup(RED_BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(BLUE_BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 GPIO.setup(GREEN_BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
-LED = 25
-GPIO.setup(LED, GPIO.OUT)
-
-while True:
+def checkButton():
     if GPIO.input(YELLOW_BUTTON) == GPIO.HIGH:
-        print("closed!")
-        GPIO.output(LED, GPIO.HIGH)
-        pass
+        return 0
 
     elif GPIO.input(RED_BUTTON) == GPIO.HIGH:
-        print("closed!")
-        GPIO.output(LED, GPIO.HIGH)
-        pass
+        return 1
 
     elif GPIO.input(BLUE_BUTTON) == GPIO.HIGH:
-        print("closed!")
-        GPIO.output(LED, GPIO.HIGH)
-        pass
+        return 2
 
     elif GPIO.input(GREEN_BUTTON) == GPIO.HIGH:
-        print("closed!")
-        GPIO.output(LED, GPIO.HIGH)
-        pass
+        return 3
 
-    else:
-        print("open!")
-        GPIO.output(LED, GPIO.LOW)
-        pass
-    sleep(1)
+# THIS IS NO LONGER BEING USED

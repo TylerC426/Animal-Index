@@ -6,6 +6,45 @@ import requests
 import json
 from PIL import Image, ImageTk
 from createimage import fetch_image, save_image
+import pineworkslabs.RPi as GPIO
+
+selection = 0
+
+YELLOW_BUTTON = 16
+RED_BUTTON = 13
+BLUE_BUTTON = 12
+GREEN_BUTTON = 6
+
+GPIO.setmode(GPIO.LE_POTATO_LOOKUP)
+GPIO.setup(YELLOW_BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(RED_BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(BLUE_BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(GREEN_BUTTON, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+def checkButton():
+    selection = 0
+    if GPIO.input(YELLOW_BUTTON) == GPIO.HIGH:
+        GPIO.cleanup()
+        window.destroy()
+
+    elif GPIO.input(RED_BUTTON) == GPIO.HIGH:
+        # to go up
+        if selection > 0:
+            species_listbox.select_clear(selection)
+            selection -= 1
+            species_listbox.select_set(selection)
+
+    elif GPIO.input(BLUE_BUTTON) == GPIO.HIGH:
+        # to go down
+        if selection < species_listbox.size():
+            species_listbox.select_clear(selection)
+            selection += 1
+            species_listbox.select_set(selection)
+
+    elif GPIO.input(GREEN_BUTTON) == GPIO.HIGH:
+        show_info()
+    GPIO.cleanup()
+    root.after(20, checkButton)
 
 def animalLookup(name):
     name = name
@@ -31,7 +70,7 @@ animal_species = {
     # Add more animals and their species here
 }'''
 
-def show_species():
+def show_species(dummy):
     global animal_data
     animal = animal_entry.get().lower()
     animal_data_json = animalLookup(animal) 
@@ -44,6 +83,8 @@ def show_species():
                 species_listbox.insert(tk.END, species_name)
     else:
         messagebox.showerror("Error", "Animal not found")
+    species_listbox.focus_set()
+    species_listbox.select_set(selection)
 
 
 def show_info():
@@ -72,6 +113,7 @@ def show_info():
 
 def create_window(description, img_path, facts):
     # Create main window
+    global window
     window = tk.Toplevel()
     window.title("Information Window")
 
@@ -129,6 +171,7 @@ def create_window(description, img_path, facts):
     bottom_info_label = tk.Label(bottom_frame, text=info_text)
     bottom_info_label.pack(padx=10, pady=10)
 
+    window.after(10, checkButton)
     window.mainloop()
 
 
@@ -155,6 +198,10 @@ species_listbox.pack()
 info_button = tk.Button(root, text="Show Info", command=show_info)
 info_button.pack()
 
+animal_entry.focus_set()
+root.bind('<Return>', show_species)
+
+root.after(10, checkButton)
 # Run the main event loop
 root.mainloop()
-
+GPIO.cleanup()
