@@ -17,3 +17,5 @@ and GPIO buttons to work menus. 2 buttons to go from page to page on animals tha
 To make things easier, the development branch for this will continue with the name "cameraDevelopment" so
 progress can more easily be tracked.
 
+5-8-24
+Set up wire and button layout for GPIO.
