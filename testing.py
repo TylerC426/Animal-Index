@@ -21,15 +21,6 @@ animal_data = None
 photo_images = []
 
 
-'''
-# Dictionary mapping animal names to their species
-animal_species = {
-    "cat": ["Felis catus", "Lynx", "Panthera", "Leopardus"],
-    "dog": ["Canis lupus familiaris", "Canis lupus dingo", "Canis lupus"],
-    "elephant": ["Loxodonta africana", "Elephas maximus"],
-    "penguin": ["emperor"]
-    # Add more animals and their species here
-}'''
 
 def show_species():
     global animal_data
@@ -61,7 +52,7 @@ def show_info():
             img = fetch_image(selected_species.lower())
             img_path = save_image(selected_species.lower(), img)
             if img_path:
-                create_window(selected_species_data['characteristics'], img_path, selected_species_data['taxonomy'])
+                create_window(selected_species_data['characteristics'], img_path, selected_species_data['taxonomy'], selected_species_data['name'])
             else:
                 messagebox.showerror("Error", "Failed to save image")
         else:
@@ -70,7 +61,7 @@ def show_info():
         messagebox.showerror("Error", "Please select a species")
 
 
-def create_window(description, img_path, facts):
+def create_window(description, img_path, facts, name):
     # Create main window
     window = tk.Toplevel()
     window.title("Information Window")
@@ -93,24 +84,13 @@ def create_window(description, img_path, facts):
     image_label.pack(side=tk.LEFT, padx=10, pady=10)
 
 
-   
 
-    prey = description.get('prey', '')
-    group_behavior = description.get('goup_behavior', '')
-    estimated_population_size = description.get('estimated_population_size', '')
-    most_distinctive_feature = description.get('most_distinctive_feature', '')
-    habitat = description.get('habitat', '')
-    diet = description.get('diet', '')
-    common_name = description.get('common_name', '')
-    location = description.get('location', '')
-    group = description.get('group', '')
-    lifespan = description.get('lifespan', '')
     family = facts.get('family', '')
     genus = facts.get('genus', '')
     scientific_name = facts.get('scientific_name', '')
 
 
-    fact_text = f"""Name: {common_name}
+    fact_text = f"""Name: {name}
     Family: {family}
     Genus: {genus}
     Scientific Name: {scientific_name}"""
@@ -121,11 +101,9 @@ def create_window(description, img_path, facts):
     info_label.pack(side=tk.RIGHT, padx=10, pady=10)
 
     # Add information in the bottom frame
-    info_text = f'''A {common_name} is a {group} that can be found in {location}.
-    Its habitat is {habitat}. 
-    It is a {diet} that preys on {prey}. It lives about {lifespan} and
-    there are about {estimated_population_size} of them. It can be described
-    as having {most_distinctive_feature}'''
+    info_text = ''
+    for thing in description:
+        info_text += f'''{thing.capitalize().replace("_", " ")}: {description[thing]}\n'''
     bottom_info_label = tk.Label(bottom_frame, text=info_text)
     bottom_info_label.pack(padx=10, pady=10)
 
