@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from tkinter import PhotoImage
+from tkinter import *
 import os
 import requests
 import json
@@ -44,7 +45,7 @@ def checkButton():
     elif GPIO.input(GREEN_BUTTON) == GPIO.HIGH:
         show_info()
     GPIO.cleanup()
-    root.after(20, checkButton)
+    root.after(10, checkButton)
 
 def animalLookup(name):
     name = name
@@ -102,7 +103,7 @@ def show_info():
             img = fetch_image(selected_species.lower())
             img_path = save_image(selected_species.lower(), img)
             if img_path:
-                create_window(selected_species_data['characteristics'], img_path, selected_species_data['taxonomy'])
+                create_window(selected_species_data['characteristics'], img_path, selected_species_data['taxonomy'], selected_species_data['name'])
             else:
                 messagebox.showerror("Error", "Failed to save image")
         else:
@@ -111,7 +112,7 @@ def show_info():
         messagebox.showerror("Error", "Please select a species")
 
 
-def create_window(description, img_path, facts):
+def create_window(description, img_path, facts, name):
     # Create main window
     global window
     window = tk.Toplevel()
@@ -152,7 +153,7 @@ def create_window(description, img_path, facts):
     scientific_name = facts.get('scientific_name', '')
 
 
-    fact_text = f"""Name: {common_name}
+    fact_text = f"""Name: {name}
     Family: {family}
     Genus: {genus}
     Scientific Name: {scientific_name}"""
@@ -163,11 +164,9 @@ def create_window(description, img_path, facts):
     info_label.pack(side=tk.RIGHT, padx=10, pady=10)
 
     # Add information in the bottom frame
-    info_text = f'''A {common_name} is a {group} that can be found in {location}.
-    Its habitat is {habitat}. 
-    It is a {diet} that preys on {prey}. It lives about {lifespan} and
-    there are about {estimated_population_size} of them. It can be described
-    as having {most_distinctive_feature}'''
+    info_text = ''
+    for thing in description:
+        info_text += f'''{thing.capitalize().replace("_", " ")}: {description[thing]}\n'''
     bottom_info_label = tk.Label(bottom_frame, text=info_text)
     bottom_info_label.pack(padx=10, pady=10)
 
